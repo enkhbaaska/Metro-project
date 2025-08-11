@@ -2,8 +2,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import NavBar from "./components/NavBar";
-import HeroSection from "./components/HeroSection";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
 import About from "./pages/About";
 import Planning from "./pages/Planning";
 import News from "./pages/News";
@@ -25,16 +26,17 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <NavBar />
+      <Header />
+      <main>
         <Routes>
-          <Route path="/" element={<HeroSection serverMsg={serverMsg} />} />
+          <Route path="/" element={<Home serverMsg={serverMsg} />} />
           <Route path="/about" element={<About />} />
           <Route path="/planning" element={<Planning />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-      </div>
+      </main>
+      <Footer />
     </Router>
   );
 }
