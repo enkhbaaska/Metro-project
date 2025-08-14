@@ -1,0 +1,112 @@
+/* Home.css additions for featured + stats layout */
+
+.featured-stats {
+  display: grid;
+  grid-template-columns: 1fr 320px; /* left content + right fixed stats column */
+  gap: 20px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+/* Left: stacked featured cards */
+.featured-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* single card */
+.featured-card {
+  display: flex;
+  gap: 12px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  padding: 10px;
+  align-items: center;
+}
+
+/* thumbnail rounded */
+.featured-thumb {
+  width: 120px;
+  height: 90px;
+  flex: 0 0 120px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #eee;
+}
+.featured-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* body */
+.featured-body {
+  flex: 1 1 auto;
+}
+.featured-title {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0b3a57;
+}
+.featured-excerpt {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.2;
+}
+.featured-meta {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Option A: horizontal full-width row where each stat expands equally */
+.featured-stats {
+  display: block; /* left/right grid removed; stats become full-width row above or below other content as needed */
+  margin-top: 8px;
+}
+
+/* Place the stats row spanning full container width */
+.stats-column {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin: 10px 0 20px 0;
+  align-items: stretch;
+  /* disable sticky so it flows naturally as a full-width row */
+  position: relative;
+  top: auto;
+  overflow: visible;
+}
+
+/* Make each block expand to fill available width equally */
+.stat-block {
+  background: #ffe08a;
+  color: #082f4f;
+  border-radius: 8px;
+  padding: 18px 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  flex: 1 1 0;      /* grow to fill, equal sizes */
+  min-width: 0;     /* allow shrinking */
+  text-align: center;
+}
+
+/* label/value */
+.stat-label { font-size: 0.95rem; font-weight: 700; }
+.stat-value { font-size: 2rem; font-weight: 800; color: #08335a; }
+
+/* Responsive: stack if container gets too narrow */
+@media (max-width: 760px) {
+  .stats-column { flex-direction: column; gap: 12px; }
+  .stat-block { width: 100%; flex: none; align-items: flex-start; text-align: left; padding: 12px; }
+}

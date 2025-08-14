@@ -1,5 +1,6 @@
 // client/src/pages/Home.jsx
 import { useEffect, useState } from "react";
+import "./Home.css";
 import HeroCarousel from "../components/HeroCarousel";
 import ServiceCard from "../components/ServiceCard";
 import NewsCard from "../components/NewsCard";
@@ -12,14 +13,12 @@ export default function Home({ serverMsg }) {
   const [ann, setAnn] = useState([]);
 
   useEffect(() => {
-    // TODO: replace with your real endpoints
-    // fetch(`${API_BASE}/news`).then(r=>r.json()).then(setNews);
-    // fetch(`${API_BASE}/announcements`).then(r=>r.json()).then(setAnn);
-
-    // Temporary demo data:
+    // demo content
     setNews([
       { id: 1, title: "Шинэ замын ажил эхэллээ", date: "2025-08-10", image: "/placeholder.jpg", excerpt: "Хотын зүүн хэсэгт..." },
       { id: 2, title: "Метроны зураг төсөл", date: "2025-08-07", image: "/placeholder.jpg", excerpt: "Судалгаа, төлөвлөлт..." },
+      { id: 3, title: "Төмөр замын шинэ загвар", date: "2025-06-08", image: "/placeholder.jpg", excerpt: "Шинэ дизайн..." },
+      { id: 4, title: "Орон нутгийн уулзалт", date: "2025-05-31", image: "/placeholder.jpg", excerpt: "Иргэдийн оролцоо..." }
     ]);
     setAnn([
       { id: 1, title: "Цахим уулзалт", date: "2025-08-12" },
@@ -28,10 +27,9 @@ export default function Home({ serverMsg }) {
   }, []);
 
   const slides = [
-  { image: "/images/hero-1.jpg", title: "Хотын хөгжилд хамтдаа" },
-  { image: "/videos/hero-2.mp4", title: "Дэд бүтэц, төлөвлөлт" }
-];
-
+    { image: "/images/hero-1.jpg", title: "Хотын хөгжилд хамтдаа" },
+    { image: "/videos/hero-2.mp4", title: "Дэд бүтэц, төлөвлөлт" }
+  ];
 
   const services = [
     { title: "Иргэдийн санал", icon: "/icons/feedback.svg", href: "/contact" },
@@ -45,17 +43,15 @@ export default function Home({ serverMsg }) {
       {/* Hero */}
       <HeroCarousel slides={slides} />
 
-      {/* Services/quick links */}
+      {/* SERVICES */}
       <section className="container section">
         <h2 className="section-title">Үйлчилгээ</h2>
         <div className="services-grid">
-          {services.map((s, idx) => (
-            <ServiceCard key={idx} {...s} />
-          ))}
+          {services.map((s, idx) => <ServiceCard key={idx} {...s} />)}
         </div>
       </section>
 
-      {/* Announcements */}
+      {/* ANNOUNCEMENTS */}
       <section className="container section">
         <div className="section-head">
           <h2 className="section-title">Зарлал</h2>
@@ -69,6 +65,52 @@ export default function Home({ serverMsg }) {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/** FEATURED LEFT + STATS RIGHT (matches photo) */}
+      <section className="container section featured-stats">
+        <div className="featured-list">
+          {/* replicate 4 stacked card look, word-for-word text comes from your image */}
+          {news.slice(0,4).map((n, i) => (
+            <article className="featured-card" key={n.id}>
+              <figure className="featured-thumb">
+                <img src={n.image} alt={n.title} />
+              </figure>
+              <div className="featured-body">
+                <h4 className="featured-title">{n.title}</h4>
+                <p className="featured-excerpt">{n.excerpt}</p>
+                <div className="featured-meta">{n.date}</div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <aside className="stats-column" aria-label="Төслийн статистик">
+          {/* Each block is exactly the text/percentage from the image */}
+          <div className="stat-block">
+            <div className="stat-label">Техник, эдийн засгийн үнэлгээ (ТЭЗҮ)</div>
+            <div className="stat-value">100%</div>
+          </div>
+
+          <div className="stat-block">
+            <div className="stat-label">Төсөлтийн э х загвар зураг</div>
+            <div className="stat-value">100%</div>
+          </div>
+
+          <div className="stat-block">
+            <div className="stat-label">БОННҮ Тайлан</div>
+            <div className="stat-value">28.5%</div>
+          </div>
+
+          <div className="stat-block">
+            <div className="stat-label">Төслийн явц</div>
+            <div className="stat-value">12%</div>
+          </div>
+
+          <div className="stat-side-caption">
+            17,200 зорчигч/цаг • 560,000 зорчигч/өдөр (жишээ)
+          </div>
+        </aside>
       </section>
 
       {/* News */}
