@@ -1,3 +1,21 @@
+/* Global safety rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* stop sideways scrolling globally */
+}
+
+/* make the app root safe too (if using CRA) */
+#root {
+  min-height: 100%;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: 'Montserrat', 'Arial', sans-serif;

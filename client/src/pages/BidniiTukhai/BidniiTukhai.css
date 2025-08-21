@@ -1,0 +1,111 @@
+/* BidniiTukhai.css - style for the left menu & content area */
+.bidnii-wrapper {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.bidnii-left {
+  background: #072d66;
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
+}
+
+.bidnii-title {
+  background: #0e3e8a;
+  padding: 10px;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.bidnii-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bidnii-item {
+  display: block;
+  background: #d9e6f9;
+  color: #072d66;
+  padding: 12px 10px;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 2px;
+  transition: transform .12s ease, border-left-color .12s ease;
+  border-left: 4px solid transparent;
+}
+
+.bidnii-item:hover {
+  transform: translateX(4px);
+  border-left-color: #ffcc00;
+}
+
+.bidnii-item.active {
+  background: linear-gradient(180deg,#e3eefc,#d0e6fb);
+  border-left-color: #ffd966;
+}
+
+/* content */
+.bidnii-content {
+  background: white;
+  padding: 18px;
+  border-radius: 4px;
+  min-height: 220px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+@media (max-width: 900px) {
+  .bidnii-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .bidnii-left {
+    order: 1;
+  }
+  .bidnii-content {
+    order: 2;
+  }
+}
+/* make the menu items look like clickable panels (buttons) */
+.bidnii-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #d9e6f9;
+  color: #072d66;
+  padding: 14px 12px;
+  border: none;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(7,45,102,0.04);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.bidnii-item:hover { transform: translateX(4px); }
+.bidnii-item.active {
+  background: linear-gradient(180deg,#e3eefc,#d0e6fb);
+  border-left: 4px solid #ffd966;
+  box-shadow: 0 4px 18px rgba(7,45,102,0.08);
+}
+
+/* content area */
+.bidnii-panel {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  min-height: 260px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+/* responsive: stack */
+@media (max-width: 900px) {
+  .bidnii-wrapper { grid-template-columns: 1fr; gap: 12px; }
+  .bidnii-left { order: 1; }
+  .bidnii-content { order: 2; }
+}

@@ -1,7 +1,7 @@
 // client/src/pages/Home.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
-import HeroCarousel from "../components/HeroCarousel";
+import BackgroundHero from "../components/BackgroundHero";
 import ServiceCard from "../components/ServiceCard";
 import NewsCard from "../components/NewsCard";
 
@@ -26,9 +26,10 @@ export default function Home({ serverMsg }) {
     ]);
   }, []);
 
-  const slides = [
-    { image: "/images/hero-1.jpg", title: "Хотын хөгжилд хамтдаа" },
-    { image: "/videos/hero-2.mp4", title: "Дэд бүтэц, төлөвлөлт" }
+  // BackgroundHero video sources (mp4 + optional webm fallback)
+  const videoSources = [
+    { src: "/videos/hero-2.mp4", type: "video/mp4" },
+    // { src: "/videos/hero-2.webm", type: "video/webm" }, // optional fallback
   ];
 
   const services = [
@@ -40,8 +41,12 @@ export default function Home({ serverMsg }) {
 
   return (
     <>
-      {/* Hero */}
-      <HeroCarousel slides={slides} />
+      {/* Background hero (Meta-style) */}
+      <BackgroundHero
+        sources={videoSources}
+        poster="/images/hero-1.jpg"
+        title="Хотын хөгжилд хамтдаа"
+      />
 
       {/* SERVICES */}
       <section className="container section">
@@ -67,11 +72,11 @@ export default function Home({ serverMsg }) {
         </ul>
       </section>
 
-      {/** FEATURED LEFT + STATS RIGHT (matches photo) */}
+      {/** FEATURED CENTER + STATS RIGHT (left menu removed) */}
       <section className="container section featured-stats">
         <div className="featured-list">
           {/* replicate 4 stacked card look, word-for-word text comes from your image */}
-          {news.slice(0,4).map((n, i) => (
+          {news.slice(0,4).map((n) => (
             <article className="featured-card" key={n.id}>
               <figure className="featured-thumb">
                 <img src={n.image} alt={n.title} />
@@ -86,7 +91,6 @@ export default function Home({ serverMsg }) {
         </div>
 
         <aside className="stats-column" aria-label="Төслийн статистик">
-          {/* Each block is exactly the text/percentage from the image */}
           <div className="stat-block">
             <div className="stat-label">Техник, эдийн засгийн үнэлгээ (ТЭЗҮ)</div>
             <div className="stat-value">100%</div>

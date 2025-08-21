@@ -1,40 +1,63 @@
-import React from "react";
+// client/src/components/Header.jsx
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const mobileNavRef = React.useRef(null);
+  // single source of truth for mobile overlay
+  const [menuOpen, setMenuOpen] = useState(false);
+  // dropdown for "Бидний тухай"
+  const [subOpen, setSubOpen] = useState(false);
+  const mobileNavRef = useRef(null);
   const location = useLocation();
 
-  // prevent background scrolling when mobile menu is open
-  React.useEffect(() => {
+  const subPages = [
+    { to: "/about/organization", label: "Байгууллагын мэдээлэл" },
+    { to: "/about/vision", label: "Зорилго, алсын хараа, уриа" },
+    { to: "/about/message", label: "Захирлын мэндчилгээ" },
+    { to: "/about/pmc", label: "Төслийн менежментийн Зөвлөх (PMC)" },
+    { to: "/about/epc", label: "Төслийн бүтээн байгуулалтын ажлыг гүйцэтгэгч (EPC)" },
+    { to: "/about/jobs", label: "150,000 Шинэ ажлын байр" },
+  ];
+
+  // close menu helper (useCallback so stable)
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    setSubOpen(false);
+  }, []);
+
+  // block body scroll on mobile overlay open
+  useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // close menu helper
-  const closeMenu = React.useCallback(() => setMenuOpen(false), []);
-
-  // Close menu when route changes (so link navigation auto-closes)
-  React.useEffect(() => {
-    // only run when path changes (not on first render)
+  // Close menu when route changes
+  useEffect(() => {
     closeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  // run when pathname changes
+  }, [location.pathname, closeMenu]);
 
-  // focus management: focus first focusable item inside mobile menu when opened
-  React.useEffect(() => {
+  // resize behavior: ensure dropdown closed when switching to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 900) {
+        setSubOpen(false);
+      }
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // focus management + Escape key to close menu when overlay open
+  useEffect(() => {
     if (!menuOpen) return;
     const node = mobileNavRef.current;
-    if (!node) return;
+    if (node) {
+      const firstFocusable = node.querySelector('a, button, input, [tabindex]:not([tabindex="-1"])');
+      firstFocusable?.focus();
+    }
 
-    const firstFocusable = node.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
-    firstFocusable?.focus();
-
-    // handle Escape key to close menu
     const onKey = (e) => {
       if (e.key === "Escape") closeMenu();
     };
@@ -53,14 +76,12 @@ export default function Header() {
       <header className="site-header">
         <div className="container header-top">
           <Link to="/" className="brand" onClick={closeMenu}>
-            {/* logos (hidden on mobile via CSS) */}
             <img src="/ubmetrologo.png" alt="UB Metro logo" className="brand-logo" />
             <img src="/ubmetro2.png" alt="UB Metro logo 2" className="brand-logo" />
             <img src="/dohwa.svg" alt="Dohwa logo" className="brand-logo" />
             <span className="brand-text">UB Metro Project</span>
           </Link>
 
-          {/* mobile toggle visible on small screens, hidden on desktop */}
           <div className="header-right-wrapper">
             <button
               className="mobile-toggle"
@@ -69,15 +90,11 @@ export default function Header() {
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen((s) => !s)}
             >
-              {/* hamburger / close */}
               <span className={`hamburger ${menuOpen ? "open" : ""}`} aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
               </span>
             </button>
 
-            {/* top-right controls (language, search, social) - hidden on mobile via CSS */}
             <div className="header-controls" role="region" aria-label="Site tools">
               <div className="lang-switch">
                 <button className="lang-btn">EN</button>
@@ -92,11 +109,9 @@ export default function Header() {
               </form>
 
               <div className="social-links">
-                <a className="social-icon" href="https://www.facebook.com/profile.php?id=61576745758867" target="_blank" rel="noopener noreferrer">F</a>
-                <a className="social-icon" href="https://x.com" target="_blank" rel="noopener noreferrer">X</a>
-                <a className="social-icon" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a>
-                <a className="social-icon" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">in</a>
-                <a className="social-icon" href="https://youtube.com" target="_blank" rel="noopener noreferrer">▶</a>
+                <a className="social-icon" href="https://www.facebook.com/profile.php?id=61576745758867" target="_blank" rel="noreferrer">F</a>
+                <a className="social-icon" href="https://x.com" target="_blank" rel="noreferrer">X</a>
+                <a className="social-icon" href="https://instagram.com" target="_blank" rel="noreferrer">IG</a>
               </div>
             </div>
           </div>
@@ -106,7 +121,37 @@ export default function Header() {
       {/* Desktop banner nav (visible on wider screens) */}
       <nav className="banner-nav" aria-label="Primary site navigation">
         <div className="banner-nav-inner container" role="menubar">
-          <NavLink to="/about" className={({ isActive }) => (isActive ? "banner-link active" : "banner-link")}>Бидний тухай</NavLink>
+          <div
+            className={`banner-link has-dropdown ${subOpen ? "open" : ""}`}
+            onMouseEnter={() => window.innerWidth > 900 && setSubOpen(true)}
+            onMouseLeave={() => window.innerWidth > 900 && setSubOpen(false)}
+          >
+            <NavLink
+              to="/about"
+              className={({ isActive }) => (isActive ? "banner-link active" : "banner-link")}
+              onClick={(e) => {
+                // on small screens, toggle submenu instead of navigating to /about
+                if (window.innerWidth <= 900) {
+                  e.preventDefault();
+                  setSubOpen((s) => !s);
+                  setMenuOpen(true); // optionally open mobile overlay
+                }
+              }}
+            >
+              Бидний тухай
+            </NavLink>
+
+            <ul className={`dropdown ${subOpen ? "open" : ""}`} aria-label="Бидний тухай submenu">
+              {subPages.map((p) => (
+                <li key={p.to}>
+                  <Link to={p.to} className="dropdown-link" onClick={() => { closeMenu(); }}>
+                    {p.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <NavLink to="/" end className={({ isActive }) => (isActive ? "banner-link active" : "banner-link")}>УБ метро төсөл</NavLink>
           <NavLink to="/planning" className={({ isActive }) => (isActive ? "banner-link active" : "banner-link")}>Тогтвортой хөгжил</NavLink>
           <NavLink to="/planning#programs" className={({ isActive }) => (isActive ? "banner-link active" : "banner-link")}>2 2 Хөтөлбөр</NavLink>
@@ -115,18 +160,17 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Mobile full-screen nav overlay (only shown on small screens) */}
+      {/* Mobile full-screen nav overlay */}
       <div
         className={`mobile-nav ${menuOpen ? "open" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile menu"
-        aria-hidden={menuOpen ? "false" : "true"}
+        aria-hidden={!menuOpen}
         onClick={onBackdropClick}
         ref={mobileNavRef}
       >
         <div className="mobile-nav-inner">
-          {/* wrapper: keeps links grouped and constrained like the desktop banner */}
           <div className="container mobile-nav-wrapper">
             <nav id="mobile-menu" className="mobile-menu" role="menu" aria-label="Primary mobile navigation">
               <NavLink to="/about" className={({ isActive }) => (isActive ? "mobile-link active" : "mobile-link")} onClick={closeMenu}>Бидний тухай</NavLink>

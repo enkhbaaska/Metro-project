@@ -1,5 +1,159 @@
 /* keep Montserrat for consistency; move to global if necessary */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+/* Header base */
+.site-header {
+  background: #072d66;
+  color: #fff;
+  position: relative;
+  z-index: 1000;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 16px;
+}
+
+/* logo */
+.logo a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* mobile toggle (visible on small screens) */
+.mobile-toggle {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  color: #fff;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+/* nav layout */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+/* nav items */
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  color: #fff;
+  padding: 10px 14px;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* dropdown panel — flush, animated, no pointer-gap */
+.has-dropdown {
+  position: relative;
+  z-index: 2000; /* ensure dropdown is above hero content */
+}
+
+/* hidden state (keeps element in DOM so mouse doesn't flicker) */
+.has-dropdown .dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;            /* directly under the parent, no extra gap */
+  margin-top: 0;
+  min-width: 260px;
+  background: #072d66;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(7,45,102,0.25);
+  z-index: 2000;
+
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: top center;
+  transform: translateY(-6px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+  pointer-events: none; /* prevent interaction when hidden */
+}
+
+/* visible state (hover or JS toggle) */
+.has-dropdown:hover > .dropdown,
+.has-dropdown .dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+
+/* dropdown links (panel items) */
+.dropdown-link {
+  display: block;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: #d9e6f9;
+  background: transparent;
+  border-radius: 2px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* visual active / hover state */
+.dropdown-link:hover {
+  background: #d0e6fb;
+  color: #072d66;
+  margin-left: 6px;
+  border-left: 6px solid #ffd966;
+  padding-left: 8px;
+}
+
+/* small screens: collapse nav into a vertical panel */
+@media (max-width: 900px) {
+  .mobile-toggle { display: inline-block; }
+
+  .main-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    display: none; /* toggled via .nav-open on header */
+    background: #072d66;
+    padding: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  }
+
+  /* show mobile nav when header has nav-open */
+  .site-header.nav-open .main-nav { display: block; }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .has-dropdown .dropdown {
+    position: static;
+    top: auto;
+    left: auto;
+    box-shadow: none;
+    padding: 6px 0 12px 0;
+  }
+
+  .dropdown-link {
+    margin: 0 12px 8px 12px;
+    border-left: 0;
+  }
+
+  .nav-link { padding: 12px; }
+}
 
 :root {
   --banner-blue: #08335a;

@@ -1,112 +1,105 @@
-/* Home.css additions for featured + stats layout */
-
+/* Left pages menu (screenshot style) */
 .featured-stats {
   display: grid;
-  grid-template-columns: 1fr 320px; /* left content + right fixed stats column */
-  gap: 20px;
+  grid-template-columns: 220px 1fr 300px; /* left menu | content | stats */
+  gap: 24px;
   align-items: start;
-  margin-top: 8px;
+  margin-top: 24px;
 }
 
-/* Left: stacked featured cards */
+/* Left vertical menu */
+.left-pages {
+  background: #072d66; /* deep blue bar background */
+  border-radius: 2px;
+  padding: 10px;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.left-pages .menu-title {
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: #0e3e8a;
+  margin-bottom: 10px;
+  text-align: left;
+  letter-spacing: 0.6px;
+}
+
+.left-pages .menu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.left-pages .menu-item {
+  display: block;
+  padding: 14px 12px;
+  margin-bottom: 10px;
+  background: #d9e6f9; /* light-blue panel */
+  color: #072d66;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 2px;
+  border-left: 4px solid transparent;
+  transition: all 150ms ease;
+  box-shadow: 0 0 0 1px rgba(7,45,102,0.04) inset;
+}
+
+.left-pages .menu-item span {
+  display:block;
+  line-height: 1.05;
+}
+
+.left-pages .menu-item:hover {
+  transform: translateX(4px);
+  border-left-color: #ffcc00; /* accent when hovered (like yellow in screenshot) */
+}
+
+/* Featured list (center column) */
 .featured-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-
-/* single card */
-.featured-card {
-  display: flex;
   gap: 12px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  padding: 10px;
-  align-items: center;
 }
 
-/* thumbnail rounded */
-.featured-thumb {
-  width: 120px;
-  height: 90px;
-  flex: 0 0 120px;
-  overflow: hidden;
-  border-radius: 8px;
-  background: #eee;
-}
-.featured-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* body */
-.featured-body {
-  flex: 1 1 auto;
-}
-.featured-title {
-  margin: 0 0 6px 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0b3a57;
-}
-.featured-excerpt {
-  margin: 0;
-  font-size: 0.92rem;
-  color: #444;
-  line-height: 1.2;
-}
-.featured-meta {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  color: #888;
-}
-
-/* Option A: horizontal full-width row where each stat expands equally */
-.featured-stats {
-  display: block; /* left/right grid removed; stats become full-width row above or below other content as needed */
-  margin-top: 8px;
-}
-
-/* Place the stats row spanning full container width */
+/* Stats column (right) reuse or extend your styles */
 .stats-column {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  margin: 10px 0 20px 0;
-  align-items: stretch;
-  /* disable sticky so it flows naturally as a full-width row */
-  position: relative;
-  top: auto;
-  overflow: visible;
+  background: transparent;
+  color: #fff;
+  padding: 6px;
 }
 
-/* Make each block expand to fill available width equally */
 .stat-block {
-  background: #ffe08a;
-  color: #082f4f;
-  border-radius: 8px;
-  padding: 18px 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  flex: 1 1 0;      /* grow to fill, equal sizes */
-  min-width: 0;     /* allow shrinking */
-  text-align: center;
+  margin-bottom: 18px;
 }
 
-/* label/value */
-.stat-label { font-size: 0.95rem; font-weight: 700; }
-.stat-value { font-size: 2rem; font-weight: 800; color: #08335a; }
+.stat-label {
+  font-size: 13px;
+  opacity: 0.9;
+}
 
-/* Responsive: stack if container gets too narrow */
-@media (max-width: 760px) {
-  .stats-column { flex-direction: column; gap: 12px; }
-  .stat-block { width: 100%; flex: none; align-items: flex-start; text-align: left; padding: 12px; }
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* Responsiveness */
+@media (max-width: 980px) {
+  .featured-stats {
+    grid-template-columns: 1fr; /* stack vertically on smaller screens */
+  }
+
+  .left-pages {
+    order: 1;
+    margin-bottom: 12px;
+  }
+
+  .featured-list {
+    order: 2;
+  }
+
+  .stats-column {
+    order: 3;
+  }
 }
