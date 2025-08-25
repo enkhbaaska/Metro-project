@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Eronhii() {
   // change this to the actual image you add in public/images/
-  const heroUrl = "/images/eronhii-hero.jpg";
+  const heroUrl = "/images/eronhii-hero.png";
 
   return (
     <div className="eron-root">
